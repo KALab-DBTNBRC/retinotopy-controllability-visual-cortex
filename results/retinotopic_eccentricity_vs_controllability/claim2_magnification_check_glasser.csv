@@ -1,0 +1,7 @@
+atlas,metric,covariate_config,n_subjects_valid,mean_partial_r,t_stat,p_ttest,note
+glasser,average_controllability_log,size_only,39,0.13838445558588247,4.355632338888215,9.699188073373692e-05,
+glasser,average_controllability_log,rfsize_only,39,0.5520529238209863,10.874428884287848,3.158005866054912e-13,
+glasser,average_controllability_log,size_and_rfsize,39,0.3770158514148937,8.539355199974725,2.2669199737682914e-10,
+glasser,modal_controllability,size_only,39,-0.06648938238431744,-4.771212522022331,2.7059837416680876e-05,
+glasser,modal_controllability,rfsize_only,39,-0.43357418158281774,-11.344245739733699,9.156583233542699e-14,
+glasser,modal_controllability,size_and_rfsize,39,-0.057157304070139324,-4.096570448212358,0.00021181170757008608,

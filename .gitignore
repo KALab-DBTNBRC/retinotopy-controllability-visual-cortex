@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
+
+# Neuroimaging intermediate/raw data (never belongs in this repo)
+*.nii
+*.nii.gz
+*.gii
+*.dtseries.nii
+*.dscalar.nii
+*.dlabel.nii
+*.mgz
+*.mgh
+*.tck
+*.trk
+*.bvec
+*.bval
+sourcedata/
+rawdata/
+derivatives/
+
+# Any private subject-ID lookup key or other de-identification key
+*PRIVATE*
+*_DO_NOT_SHIP*
+subject_id_mapping*.json
+
+# Restricted-access HCP data. These carry real subject IDs alongside
+# behavioural and diagnostic variables and must never be committed. Cohort
+# construction is documented by the scripts, not by shipping their inputs
+# or outputs. See the de-identification section of README.md.
+cohort-selection.xlsx
+addiction-cohort-selection.xlsx
+master-table.xlsx
+addiction-master-table.xlsx
+HCP_YA_subjects*.csv
+HCP_RETINOTOPY_FULLCOHORT.csv
+all_subjects_*.csv
+*_addiction20_subjectlevel.csv
+
+# Manuscript working files — maintained separately from the code repository
+manuscript-*.md
+manuscript-*.docx
+frontiers-format-*.md
+frontiers-format-*.docx
+*.pdf
+
+# Internal working drafts — not published with the repository
+docs/

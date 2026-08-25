@@ -1,0 +1,3 @@
+metric,n_subjects_valid,median_n_nodes_used,mean_raw_r,mean_partial_r,mean_fisher_z,perm_p_value,n_permutations_used,q_value_fdr_perm,t_stat,p_ttest,wilcoxon_stat,p_wilcoxon,note
+average_controllability_log,0,,,,,,,,,,,,"too few valid subjects, skipped"
+modal_controllability,0,,,,,,,,,,,,"too few valid subjects, skipped"

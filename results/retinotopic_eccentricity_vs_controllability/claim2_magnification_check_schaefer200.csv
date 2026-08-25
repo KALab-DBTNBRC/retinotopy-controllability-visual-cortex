@@ -1,0 +1,7 @@
+atlas,metric,covariate_config,n_subjects_valid,mean_partial_r,t_stat,p_ttest,note
+schaefer200,average_controllability_log,size_only,41,0.24778989826173706,7.01922554313597,1.7634071228255752e-08,
+schaefer200,average_controllability_log,rfsize_only,41,0.34780040369356846,9.372470974738787,1.2098561281284401e-11,
+schaefer200,average_controllability_log,size_and_rfsize,41,0.30120484908843825,8.046800781552573,6.831386150999415e-10,
+schaefer200,modal_controllability,size_only,41,-0.23354261089645997,-7.041614905787599,1.641366692515528e-08,
+schaefer200,modal_controllability,rfsize_only,41,-0.3410922153752291,-9.43116554011507,1.0169068698380173e-11,
+schaefer200,modal_controllability,size_and_rfsize,41,-0.27476259247157286,-7.542981118414014,3.3253548752411916e-09,

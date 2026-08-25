@@ -1,0 +1,121 @@
+region,hemisphere,region_type,matched_region_name,receptor,unit,mean_density,std_density
+hOc1,left,cortical,"Area hOc1 (V1, 17, CalcS) left",AMPA,fmol/mg,500.0,223.0
+hOc1,left,cortical,"Area hOc1 (V1, 17, CalcS) left",kainate,fmol/mg,260.0,239.0
+hOc1,left,cortical,"Area hOc1 (V1, 17, CalcS) left",NMDA,fmol/mg,1348.0,320.0
+hOc1,left,cortical,"Area hOc1 (V1, 17, CalcS) left",GABAA,fmol/mg,2508.0,828.0
+hOc1,left,cortical,"Area hOc1 (V1, 17, CalcS) left",GABAB,fmol/mg,2187.0,274.0
+hOc1,left,cortical,"Area hOc1 (V1, 17, CalcS) left",BZ,fmol/mg,3882.0,1761.0
+hOc1,left,cortical,"Area hOc1 (V1, 17, CalcS) left",M1,fmol/mg,661.0,123.0
+hOc1,left,cortical,"Area hOc1 (V1, 17, CalcS) left",M2,fmol/mg,390.0,35.0
+hOc1,left,cortical,"Area hOc1 (V1, 17, CalcS) left",M3,fmol/mg,524.0,395.0
+hOc1,left,cortical,"Area hOc1 (V1, 17, CalcS) left",alpha4beta2,fmol/mg,48.0,14.0
+hOc1,left,cortical,"Area hOc1 (V1, 17, CalcS) left",alpha1,fmol/mg,264.0,59.0
+hOc1,left,cortical,"Area hOc1 (V1, 17, CalcS) left",alpha2,fmol/mg,347.0,120.0
+hOc1,left,cortical,"Area hOc1 (V1, 17, CalcS) left",5-HT1A,fmol/mg,192.0,145.0
+hOc1,left,cortical,"Area hOc1 (V1, 17, CalcS) left",5-HT2,fmol/mg,408.0,198.0
+hOc1,left,cortical,"Area hOc1 (V1, 17, CalcS) left",D1,fmol/mg,102.0,37.0
+hOc1,right,cortical,"Area hOc1 (V1, 17, CalcS) right",AMPA,fmol/mg,500.0,223.0
+hOc1,right,cortical,"Area hOc1 (V1, 17, CalcS) right",kainate,fmol/mg,260.0,239.0
+hOc1,right,cortical,"Area hOc1 (V1, 17, CalcS) right",NMDA,fmol/mg,1348.0,320.0
+hOc1,right,cortical,"Area hOc1 (V1, 17, CalcS) right",GABAA,fmol/mg,2508.0,828.0
+hOc1,right,cortical,"Area hOc1 (V1, 17, CalcS) right",GABAB,fmol/mg,2187.0,274.0
+hOc1,right,cortical,"Area hOc1 (V1, 17, CalcS) right",BZ,fmol/mg,3882.0,1761.0
+hOc1,right,cortical,"Area hOc1 (V1, 17, CalcS) right",M1,fmol/mg,661.0,123.0
+hOc1,right,cortical,"Area hOc1 (V1, 17, CalcS) right",M2,fmol/mg,390.0,35.0
+hOc1,right,cortical,"Area hOc1 (V1, 17, CalcS) right",M3,fmol/mg,524.0,395.0
+hOc1,right,cortical,"Area hOc1 (V1, 17, CalcS) right",alpha4beta2,fmol/mg,48.0,14.0
+hOc1,right,cortical,"Area hOc1 (V1, 17, CalcS) right",alpha1,fmol/mg,264.0,59.0
+hOc1,right,cortical,"Area hOc1 (V1, 17, CalcS) right",alpha2,fmol/mg,347.0,120.0
+hOc1,right,cortical,"Area hOc1 (V1, 17, CalcS) right",5-HT1A,fmol/mg,192.0,145.0
+hOc1,right,cortical,"Area hOc1 (V1, 17, CalcS) right",5-HT2,fmol/mg,408.0,198.0
+hOc1,right,cortical,"Area hOc1 (V1, 17, CalcS) right",D1,fmol/mg,102.0,37.0
+hOc2,left,cortical,"Area hOc2 (V2, 18) left",AMPA,fmol/mg,461.5,107.00467279516349
+hOc2,left,cortical,"Area hOc2 (V2, 18) left",kainate,fmol/mg,342.0,274.0168790421495
+hOc2,left,cortical,"Area hOc2 (V2, 18) left",NMDA,fmol/mg,1449.5,145.74035131012963
+hOc2,left,cortical,"Area hOc2 (V2, 18) left",GABAA,fmol/mg,2084.0,281.5266417233012
+hOc2,left,cortical,"Area hOc2 (V2, 18) left",GABAB,fmol/mg,1942.0,325.11574861885725
+hOc2,left,cortical,"Area hOc2 (V2, 18) left",BZ,fmol/mg,3204.0,1857.851043544665
+hOc2,left,cortical,"Area hOc2 (V2, 18) left",M1,fmol/mg,546.5,67.55183195147264
+hOc2,left,cortical,"Area hOc2 (V2, 18) left",M2,fmol/mg,369.5,86.46531096341468
+hOc2,left,cortical,"Area hOc2 (V2, 18) left",M3,fmol/mg,449.5,27.586228448267445
+hOc2,left,cortical,"Area hOc2 (V2, 18) left",alpha4beta2,fmol/mg,38.0,4.301162633521313
+hOc2,left,cortical,"Area hOc2 (V2, 18) left",alpha1,fmol/mg,322.5,59.77039400907442
+hOc2,left,cortical,"Area hOc2 (V2, 18) left",alpha2,fmol/mg,248.5,105.81233387464809
+hOc2,left,cortical,"Area hOc2 (V2, 18) left",5-HT1A,fmol/mg,323.5,65.51717332119877
+hOc2,left,cortical,"Area hOc2 (V2, 18) left",5-HT2,fmol/mg,422.0,53.75872022286245
+hOc2,left,cortical,"Area hOc2 (V2, 18) left",D1,fmol/mg,108.5,21.93171219946131
+hOc2,right,cortical,"Area hOc2 (V2, 18) right",AMPA,fmol/mg,461.5,107.00467279516349
+hOc2,right,cortical,"Area hOc2 (V2, 18) right",kainate,fmol/mg,342.0,274.0168790421495
+hOc2,right,cortical,"Area hOc2 (V2, 18) right",NMDA,fmol/mg,1449.5,145.74035131012963
+hOc2,right,cortical,"Area hOc2 (V2, 18) right",GABAA,fmol/mg,2084.0,281.5266417233012
+hOc2,right,cortical,"Area hOc2 (V2, 18) right",GABAB,fmol/mg,1942.0,325.11574861885725
+hOc2,right,cortical,"Area hOc2 (V2, 18) right",BZ,fmol/mg,3204.0,1857.851043544665
+hOc2,right,cortical,"Area hOc2 (V2, 18) right",M1,fmol/mg,546.5,67.55183195147264
+hOc2,right,cortical,"Area hOc2 (V2, 18) right",M2,fmol/mg,369.5,86.46531096341468
+hOc2,right,cortical,"Area hOc2 (V2, 18) right",M3,fmol/mg,449.5,27.586228448267445
+hOc2,right,cortical,"Area hOc2 (V2, 18) right",alpha4beta2,fmol/mg,38.0,4.301162633521313
+hOc2,right,cortical,"Area hOc2 (V2, 18) right",alpha1,fmol/mg,322.5,59.77039400907442
+hOc2,right,cortical,"Area hOc2 (V2, 18) right",alpha2,fmol/mg,248.5,105.81233387464809
+hOc2,right,cortical,"Area hOc2 (V2, 18) right",5-HT1A,fmol/mg,323.5,65.51717332119877
+hOc2,right,cortical,"Area hOc2 (V2, 18) right",5-HT2,fmol/mg,422.0,53.75872022286245
+hOc2,right,cortical,"Area hOc2 (V2, 18) right",D1,fmol/mg,108.5,21.93171219946131
+hOc3v,left,cortical,Area hOc3v (LingG) left,AMPA,fmol/mg,477.0,118.0
+hOc3v,left,cortical,Area hOc3v (LingG) left,kainate,fmol/mg,391.0,448.0
+hOc3v,left,cortical,Area hOc3v (LingG) left,NMDA,fmol/mg,1496.0,215.0
+hOc3v,left,cortical,Area hOc3v (LingG) left,GABAA,fmol/mg,2338.0,570.0
+hOc3v,left,cortical,Area hOc3v (LingG) left,GABAB,fmol/mg,2119.0,103.0
+hOc3v,left,cortical,Area hOc3v (LingG) left,BZ,fmol/mg,2917.0,2139.0
+hOc3v,left,cortical,Area hOc3v (LingG) left,M1,fmol/mg,578.0,25.0
+hOc3v,left,cortical,Area hOc3v (LingG) left,M2,fmol/mg,299.0,68.0
+hOc3v,left,cortical,Area hOc3v (LingG) left,M3,fmol/mg,485.0,53.0
+hOc3v,left,cortical,Area hOc3v (LingG) left,alpha4beta2,fmol/mg,47.0,7.0
+hOc3v,left,cortical,Area hOc3v (LingG) left,alpha1,fmol/mg,301.0,28.0
+hOc3v,left,cortical,Area hOc3v (LingG) left,alpha2,fmol/mg,219.0,82.0
+hOc3v,left,cortical,Area hOc3v (LingG) left,5-HT1A,fmol/mg,366.0,14.0
+hOc3v,left,cortical,Area hOc3v (LingG) left,5-HT2,fmol/mg,404.0,56.0
+hOc3v,left,cortical,Area hOc3v (LingG) left,D1,fmol/mg,102.0,28.0
+hOc3v,right,cortical,Area hOc3v (LingG) right,AMPA,fmol/mg,477.0,118.0
+hOc3v,right,cortical,Area hOc3v (LingG) right,kainate,fmol/mg,391.0,448.0
+hOc3v,right,cortical,Area hOc3v (LingG) right,NMDA,fmol/mg,1496.0,215.0
+hOc3v,right,cortical,Area hOc3v (LingG) right,GABAA,fmol/mg,2338.0,570.0
+hOc3v,right,cortical,Area hOc3v (LingG) right,GABAB,fmol/mg,2119.0,103.0
+hOc3v,right,cortical,Area hOc3v (LingG) right,BZ,fmol/mg,2917.0,2139.0
+hOc3v,right,cortical,Area hOc3v (LingG) right,M1,fmol/mg,578.0,25.0
+hOc3v,right,cortical,Area hOc3v (LingG) right,M2,fmol/mg,299.0,68.0
+hOc3v,right,cortical,Area hOc3v (LingG) right,M3,fmol/mg,485.0,53.0
+hOc3v,right,cortical,Area hOc3v (LingG) right,alpha4beta2,fmol/mg,47.0,7.0
+hOc3v,right,cortical,Area hOc3v (LingG) right,alpha1,fmol/mg,301.0,28.0
+hOc3v,right,cortical,Area hOc3v (LingG) right,alpha2,fmol/mg,219.0,82.0
+hOc3v,right,cortical,Area hOc3v (LingG) right,5-HT1A,fmol/mg,366.0,14.0
+hOc3v,right,cortical,Area hOc3v (LingG) right,5-HT2,fmol/mg,404.0,56.0
+hOc3v,right,cortical,Area hOc3v (LingG) right,D1,fmol/mg,102.0,28.0
+hOc3d,left,cortical,Area hOc3d (Cuneus) left,AMPA,fmol/mg,478.0,198.0
+hOc3d,left,cortical,Area hOc3d (Cuneus) left,kainate,fmol/mg,369.0,424.0
+hOc3d,left,cortical,Area hOc3d (Cuneus) left,NMDA,fmol/mg,1361.0,411.0
+hOc3d,left,cortical,Area hOc3d (Cuneus) left,GABAA,fmol/mg,2091.0,629.0
+hOc3d,left,cortical,Area hOc3d (Cuneus) left,GABAB,fmol/mg,1617.0,119.0
+hOc3d,left,cortical,Area hOc3d (Cuneus) left,BZ,fmol/mg,2594.0,1894.0
+hOc3d,left,cortical,Area hOc3d (Cuneus) left,M1,fmol/mg,381.0,81.0
+hOc3d,left,cortical,Area hOc3d (Cuneus) left,M2,fmol/mg,229.0,19.0
+hOc3d,left,cortical,Area hOc3d (Cuneus) left,M3,fmol/mg,401.0,37.0
+hOc3d,left,cortical,Area hOc3d (Cuneus) left,alpha4beta2,fmol/mg,32.0,7.0
+hOc3d,left,cortical,Area hOc3d (Cuneus) left,alpha1,fmol/mg,277.0,36.0
+hOc3d,left,cortical,Area hOc3d (Cuneus) left,alpha2,fmol/mg,225.0,124.0
+hOc3d,left,cortical,Area hOc3d (Cuneus) left,5-HT1A,fmol/mg,342.0,143.0
+hOc3d,left,cortical,Area hOc3d (Cuneus) left,5-HT2,fmol/mg,357.0,21.0
+hOc3d,left,cortical,Area hOc3d (Cuneus) left,D1,fmol/mg,98.0,27.0
+hOc3d,right,cortical,Area hOc3d (Cuneus) right,AMPA,fmol/mg,478.0,198.0
+hOc3d,right,cortical,Area hOc3d (Cuneus) right,kainate,fmol/mg,369.0,424.0
+hOc3d,right,cortical,Area hOc3d (Cuneus) right,NMDA,fmol/mg,1361.0,411.0
+hOc3d,right,cortical,Area hOc3d (Cuneus) right,GABAA,fmol/mg,2091.0,629.0
+hOc3d,right,cortical,Area hOc3d (Cuneus) right,GABAB,fmol/mg,1617.0,119.0
+hOc3d,right,cortical,Area hOc3d (Cuneus) right,BZ,fmol/mg,2594.0,1894.0
+hOc3d,right,cortical,Area hOc3d (Cuneus) right,M1,fmol/mg,381.0,81.0
+hOc3d,right,cortical,Area hOc3d (Cuneus) right,M2,fmol/mg,229.0,19.0
+hOc3d,right,cortical,Area hOc3d (Cuneus) right,M3,fmol/mg,401.0,37.0
+hOc3d,right,cortical,Area hOc3d (Cuneus) right,alpha4beta2,fmol/mg,32.0,7.0
+hOc3d,right,cortical,Area hOc3d (Cuneus) right,alpha1,fmol/mg,277.0,36.0
+hOc3d,right,cortical,Area hOc3d (Cuneus) right,alpha2,fmol/mg,225.0,124.0
+hOc3d,right,cortical,Area hOc3d (Cuneus) right,5-HT1A,fmol/mg,342.0,143.0
+hOc3d,right,cortical,Area hOc3d (Cuneus) right,5-HT2,fmol/mg,357.0,21.0
+hOc3d,right,cortical,Area hOc3d (Cuneus) right,D1,fmol/mg,98.0,27.0

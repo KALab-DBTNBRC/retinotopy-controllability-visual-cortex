@@ -1,0 +1,3 @@
+atlas,metric,n_subjects,mean_partial_r,ci_lower_2.5,ci_upper_97.5,n_boot
+schaefer200,average_controllability_log,41,0.2635271614929064,0.1956775863188558,0.33412416798533684,10000
+schaefer200,modal_controllability,41,-0.24409573757061004,-0.3085352014208348,-0.17778762513599583,10000
