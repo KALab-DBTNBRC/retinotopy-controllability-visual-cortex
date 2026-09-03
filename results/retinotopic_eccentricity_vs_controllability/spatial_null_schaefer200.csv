@@ -1,0 +1,5 @@
+metric,null_kind,atlas,n_subjects,mean_partial_r,perm_p_value,q_value_fdr,note
+average_controllability_log,spin,schaefer200,41,0.2635271614929064,9.999000099990002e-05,9.999000099990002e-05,
+modal_controllability,spin,schaefer200,41,-0.24409573757061004,9.999000099990002e-05,9.999000099990002e-05,
+average_controllability_log,moran,schaefer200,41,0.2635271614929064,9.999000099990002e-05,9.999000099990002e-05,
+modal_controllability,moran,schaefer200,41,-0.24409573757061004,9.999000099990002e-05,9.999000099990002e-05,

@@ -1,4 +1,4 @@
-# Retinotopic Organization, Not Receptor Architecture, Predicts Structural Controllability in Human Visual Cortex
+# Retinotopic Organization, Not Receptor Architecture, Is Associated With Structural Controllability in Human Visual Cortex
 
 Code and results for a network control theory (NCT) study of human visual
 cortex, testing whether cytoarchitectonic receptor density or retinotopic
@@ -61,15 +61,21 @@ scripts/
   01_data_acquisition/                           HCP download, BIDS conversion, QC
   02_atlas_receptor_density/                     Julich-Brain cytoarchitectonic atlas + receptor density
   03_retinotopy_processing/                      7T pRF solution extraction and QC
-  04_connectome_nct/                             Tractography, connectome construction, controllability
+  04_connectome_nct/                             Tractography, connectome construction, controllability,
+                                                 and the comparison graph metrics (degree, eigenvector
+                                                 centrality, communicability, participation coefficient)
   05_receptor_architecture_vs_controllability/   Receptor density vs. controllability (8 hOc units)
   06_retinotopic_eccentricity_vs_controllability/ Eccentricity/polar angle vs. controllability (central
-                                                 finding), incl. run_claim2_nodestrength_control.py
+                                                 finding), incl. run_claim2_nodestrength_control.py and
+                                                 the robustness suite: metric specificity, spatially
+                                                 constrained nulls, per-division slope comparison,
+                                                 missingness and hemisphere diagnostics
   07_behavior_personality/                       Controllability vs. behavior and personality (exploratory)
   08_sex_receptor_interaction/                   Sex differences and sex x receptor-density interaction
   09_receptor_architecture_side_analyses/        Receptor fingerprint structure; non-controllability bridges
   10_addiction_companion_cohort/                 N=20 companion cohort: construction, replication,
-                                                 group comparison, SSAGA severity sweep
+                                                 group comparison, SSAGA severity sweep, and the
+                                                 gradient-level cohort/severity/behaviour tests
   11_power_analysis/                             Minimum-detectable-effect analyses for the null results
   12_figure_generation/                          Per-node effect maps and figure source renders
 tests/                                           Synthetic-fixture self-tests with known ground truth
@@ -77,6 +83,8 @@ results/
   <one subfolder per analysis stage above, mirroring scripts/05-12>
 data/
   receptor-densities-deduped.csv                 Group-level Julich receptor densities (no subject data)
+  {glasser,schaefer200}_node_centroids.csv       Node centroid coordinates from the group surfaces, used
+                                                 as input to the spatially constrained null tests
 METHODS_DEVELOPMENT_RECORD.md                    Pipeline errors found, fixed, and verified during
                                                  construction, with the verification method for each
 ```
@@ -109,6 +117,16 @@ result tables (receptor densities, cytoarchitectonic region definitions,
 etc.) carry no subject identifiers by construction, and every shipped table
 was checked programmatically for six-digit HCP identifiers before release.
 
+The subject-level graph-metric tables produced by
+`scripts/04_connectome_nct/compute_graph_metrics.py` are excluded
+rather than anonymised. They carry a `subject` column of raw HCP IDs, and for
+the companion-cohort variants the filename plus that column would together
+disclose substance-use cohort membership. Only the node- and group-level
+summaries derived from them are shipped in
+`results/retinotopic_eccentricity_vs_controllability/`. Anyone with HCP
+access can regenerate
+the subject-level tables by running that script against their own data.
+
 The cohort-definition spreadsheets (`cohort-selection.xlsx`,
 `addiction-cohort-selection.xlsx`, `master-table.xlsx`), the HCP restricted-
 access subject table, and per-subject pRF/connectome tables are deliberately
@@ -117,6 +135,33 @@ level information. Cohort construction is instead documented by the scripts
 in `scripts/01_data_acquisition/` and
 `scripts/10_addiction_companion_cohort/`, which state every inclusion and
 exclusion criterion applied.
+
+## Robustness of the central finding
+
+The eccentricity-controllability result is supported by a suite of checks in
+`scripts/06_*`, each a standalone script with an embedded synthetic-fixture
+self-test (`--self-test`) that runs without real data and validates the
+estimator against known ground truth, including negative controls.
+
+| Script | Question it answers |
+|---|---|
+| `run_claim2_nodestrength_control.py` | Is the effect just weighted node degree wearing another name? |
+| `run_graph_metric_specificity.py` (and `_parallel`) | Is the effect specific to controllability, or does eccentricity predict every network centrality measure equally? |
+| `run_spatial_null.py` (and `_parallel`) | Does it survive nulls preserving the spatial autocorrelation of a cortical map (spin test, Moran spectral randomisation)? |
+| `run_division_slope_comparison.py` | Is the effect genuinely larger in Early Visual cortex, or does that division simply retain more participants? |
+| `run_missingness_hemisphere.py` | Is the surviving node set non-random with respect to eccentricity, and is the effect hemispherically symmetric? |
+| `run_claim2_influence_check.py`, `run_claim2_magnification_check.py`, `run_claim2_rfsize_permutation.py`, `bootstrap_claim2_ci.py` | Individual-participant influence, cortical magnification, receptive-field size, interval estimates |
+
+Two of these narrowed the paper's claims rather than supporting them.
+Specificity to controllability holds in Glasser MMP1.0 but not in
+Schaefer-200, where eccentricity predicts all centrality measures
+undifferentiatedly. And Early Visual cortex yields the strongest *evidence*
+for the effect but cannot be shown to have the largest *effect*, since
+divisions differ in participant retention as well as in effect size.
+
+The `_parallel` variants are vectorised for permutation-heavy runs and seed
+per work unit via `numpy.random.SeedSequence.spawn()`, so results are
+reproducible and invariant to the number of jobs.
 
 ## Statistical approach
 

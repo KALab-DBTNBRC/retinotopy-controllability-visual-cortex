@@ -60,6 +60,13 @@ HCP_YA_subjects*.csv
 HCP_RETINOTOPY_FULLCOHORT.csv
 all_subjects_*.csv
 *_addiction20_subjectlevel.csv
+# Subject-level graph-metric tables from the reviewer-response analyses. These
+# carry a `subject` column of real HCP IDs. The addiction-cohort variants are
+# especially sensitive, since the filename plus the ID would disclose cohort
+# membership. Only the node- and group-level summaries are shipped; regenerate
+# these locally with scripts/04_connectome_nct/compute_graph_metrics.py.
+graph_metrics_PARTIAL*.csv
+*graph_metrics_*addictioncohort*.csv
 
 # Manuscript working files — maintained separately from the code repository
 manuscript-*.md

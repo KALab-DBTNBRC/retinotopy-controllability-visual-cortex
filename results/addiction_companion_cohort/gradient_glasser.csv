@@ -1,0 +1,19 @@
+analysis,metric,variable,n,estimate,perm_p_value,q_value_fdr
+gradient_vs_behaviour,average_controllability_log,Delay Discounting AUC ($200),39,-0.17613372484159182,0.2796720327967203,0.6900059994000599
+gradient_vs_behaviour,average_controllability_log,"Delay Discounting AUC ($40,000)",39,-0.16901094116212118,0.3066693330666933,0.6900059994000599
+gradient_vs_behaviour,average_controllability_log,Flanker Inhibitory Control (age-adj),39,0.0688692438535866,0.6746325367463254,0.9834428321873695
+gradient_vs_behaviour,modal_controllability,Delay Discounting AUC ($200),39,-0.0028418556363470925,0.9884011598840116,0.9884011598840117
+gradient_vs_behaviour,modal_controllability,"Delay Discounting AUC ($40,000)",39,0.015827894635842926,0.9288071192880712,0.9834428321873695
+gradient_vs_behaviour,modal_controllability,Flanker Inhibitory Control (age-adj),39,-0.23879781203225328,0.14388561143885611,0.5968203179682032
+cohort_x_eccentricity,average_controllability_log,primary_minus_companion,57,-0.009752815448852425,0.8612138786121388,0.9834428321873695
+cohort_x_eccentricity,modal_controllability,primary_minus_companion,57,0.007012246265867814,0.7949205079492051,0.9834428321873695
+severity_x_eccentricity,average_controllability_log,Alcohol Abuse Symptom Count,18,-0.1919964834288877,0.44465553444655537,0.8893110688931107
+severity_x_eccentricity,average_controllability_log,Alcohol Dependence Symptom Count,18,-0.3536051578753341,0.1531846815318468,0.5968203179682032
+severity_x_eccentricity,average_controllability_log,"Total Drinks, Past 7 Days",18,-0.07370684986281717,0.7762223777622238,0.9834428321873695
+severity_x_eccentricity,average_controllability_log,Marijuana Times-Used Category,18,-0.023359430872751274,0.9286071392860714,0.9834428321873695
+severity_x_eccentricity,average_controllability_log,Lifetime Smoking History Class,18,-0.15459512252656177,0.5451454854514548,0.9812618738126186
+severity_x_eccentricity,modal_controllability,Alcohol Abuse Symptom Count,18,-0.3443309868051312,0.16578342165783422,0.5968203179682032
+severity_x_eccentricity,modal_controllability,Alcohol Dependence Symptom Count,18,-0.3813250484743121,0.11448855114488551,0.5968203179682032
+severity_x_eccentricity,modal_controllability,"Total Drinks, Past 7 Days",18,0.0652050455559632,0.8007199280071993,0.9834428321873695
+severity_x_eccentricity,modal_controllability,Marijuana Times-Used Category,18,-0.3825173229370764,0.11828817118288171,0.5968203179682032
+severity_x_eccentricity,modal_controllability,Lifetime Smoking History Class,18,-0.29665850017103834,0.23117688231176883,0.6900059994000599

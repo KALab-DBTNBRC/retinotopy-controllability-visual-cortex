@@ -1,0 +1,5 @@
+metric,null_kind,atlas,n_subjects,mean_partial_r,perm_p_value,q_value_fdr,note
+average_controllability_log,spin,glasser,39,0.14336026755885145,0.0004999500049995,0.000999900009999,
+modal_controllability,spin,glasser,39,-0.0669523043691334,0.45115488451154884,0.45115488451154884,
+average_controllability_log,moran,glasser,39,0.14336026755885145,0.00019998000199980003,0.0007999200079992001,
+modal_controllability,moran,glasser,39,-0.0669523043691334,0.042695730426957304,0.056927640569276405,

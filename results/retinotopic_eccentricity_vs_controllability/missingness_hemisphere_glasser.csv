@@ -1,0 +1,5 @@
+analysis,metric,hemisphere,n,estimate,perm_p_value,note
+missingness_per_subject,,,45,0.0140901744538288,0.48165183481651835,negative r = peripheral nodes drop out more
+missingness_node_level,,,46,0.018010393331192965,0.9054335885242586,"parametric p, node-level summary"
+hemisphere_paired,average_controllability_log,L_minus_R,42,0.17415898340985997,0.009799020097990201,"L r=+0.292, R r=+0.126"
+hemisphere_paired,modal_controllability,L_minus_R,42,0.031116597246733317,0.45795420457954206,"L r=-0.071, R r=-0.102"
