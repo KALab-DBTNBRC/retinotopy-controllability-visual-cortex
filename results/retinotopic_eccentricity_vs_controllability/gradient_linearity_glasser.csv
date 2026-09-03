@@ -1,0 +1,2 @@
+atlas,metric,n_subjects,n_knots,mean_delta_r2_observed,mean_delta_r2_null,mean_excess,p_permutation,direction
+glasser,average_controllability,39,4,0.148155,0.074460,0.073695,0.000100,nonlinear

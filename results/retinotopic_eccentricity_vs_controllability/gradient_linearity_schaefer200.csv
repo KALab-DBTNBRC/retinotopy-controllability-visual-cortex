@@ -1,0 +1,2 @@
+atlas,metric,n_subjects,n_knots,mean_delta_r2_observed,mean_delta_r2_null,mean_excess,p_permutation,direction
+schaefer200,average_controllability,41,4,0.064580,0.098679,-0.034099,0.000100,rougher_than_noise

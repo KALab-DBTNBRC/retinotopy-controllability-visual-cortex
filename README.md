@@ -1,7 +1,7 @@
 # Retinotopic Organization, Not Receptor Architecture, Is Associated With Structural Controllability in Human Visual Cortex
 
 [![tests](https://github.com/KALab-DBTNBRC/retinotopy-controllability-visual-cortex/actions/workflows/tests.yml/badge.svg)](https://github.com/KALab-DBTNBRC/retinotopy-controllability-visual-cortex/actions/workflows/tests.yml)
-[![fixture tests](https://img.shields.io/badge/fixture%20tests-18%20passing-brightgreen)](tests/)
+[![fixture tests](https://img.shields.io/badge/fixture%20tests-23%20passing-brightgreen)](tests/)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue?logo=python&logoColor=white)](#dependencies)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow)](LICENSE)
 
@@ -75,9 +75,12 @@ scripts/
   02_atlas_receptor_density/                     Julich-Brain cytoarchitectonic atlas + receptor density
   03_retinotopy_processing/                      7T pRF solution extraction and QC
   04_connectome_nct/                             Tractography, connectome construction, controllability,
-                                                 and the comparison graph metrics (degree, eigenvector
-                                                 centrality, communicability, participation coefficient)
-  05_receptor_architecture_vs_controllability/   Receptor density vs. controllability (8 hOc units)
+                                                 the comparison graph metrics (degree, eigenvector
+                                                 centrality, communicability, participation coefficient),
+                                                 and the within-/extra-visual connectivity decomposition
+  05_receptor_architecture_vs_controllability/   Receptor density vs. controllability (8 hOc units),
+                                                 incl. Bayes factors quantifying what the 8-unit
+                                                 design can and cannot exclude
   06_retinotopic_eccentricity_vs_controllability/ Eccentricity/polar angle vs. controllability (central
                                                  finding), incl. run_claim2_nodestrength_control.py and
                                                  the robustness suite: metric specificity, spatially
@@ -163,14 +166,31 @@ estimator against known ground truth, including negative controls.
 | `run_spatial_null.py` (and `_parallel`) | Does it survive nulls preserving the spatial autocorrelation of a cortical map (spin test, Moran spectral randomisation)? |
 | `run_division_slope_comparison.py` | Is the effect genuinely larger in Early Visual cortex, or does that division simply retain more participants? |
 | `run_missingness_hemisphere.py` | Is the surviving node set non-random with respect to eccentricity, and is the effect hemispherically symmetric? |
+| `run_connectivity_decomposition.py` | Does the relationship track connections within visual cortex, or connections to the rest of the brain? |
+| `run_gradient_linearity.py` | Is the relationship linear, or only monotonic? |
+| `run_gradient_linearity_adjusted.py` | Does any curvature survive node-strength adjustment, and does it hold up out of sample? |
 | `run_claim2_influence_check.py`, `run_claim2_magnification_check.py`, `run_claim2_rfsize_permutation.py`, `bootstrap_claim2_ci.py` | Individual-participant influence, cortical magnification, receptive-field size, interval estimates |
 
-Two of these narrowed the paper's claims rather than supporting them.
+Three of these narrowed the paper's claims rather than supporting them.
 Specificity to controllability holds in Glasser MMP1.0 but not in
 Schaefer-200, where eccentricity predicts all centrality measures
-undifferentiatedly. And Early Visual cortex yields the strongest *evidence*
+undifferentiatedly. Early Visual cortex yields the strongest *evidence*
 for the effect but cannot be shown to have the largest *effect*, since
-divisions differ in participant retention as well as in effect size.
+divisions differ in participant retention as well as in effect size. And an
+apparent departure from linearity, reported in an earlier draft, proved to be
+a connectivity-strength effect: it vanished once weighted node degree entered
+the model, and the spline never predicted held-out nodes better than a
+straight line. **`gradient_linearity_*.csv` therefore reports a superseded,
+unadjusted result and is retained only for comparison; the adjusted result in
+`gradient_linearity_adjusted_*.csv` is the one the manuscript reports.**
+
+The two parcellations are used for different questions, and each for the
+question it can answer. Glasser's architectonic parcel boundaries let the
+network metrics separate, so it is the atlas for asking whether the
+relationship is specific to average controllability. Schaefer-200's
+near-uniform parcel sizes let the within- and extra-visual connectivity
+components separate, so it is the atlas for asking which component the
+relationship tracks.
 
 The `_parallel` variants are vectorised for permutation-heavy runs and seed
 per work unit via `numpy.random.SeedSequence.spawn()`, so results are
