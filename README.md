@@ -1,4 +1,4 @@
-# Retinotopic Organization, Not Receptor Architecture, Is Associated With Structural Controllability in Human Visual Cortex
+# Retinotopic Organization Is Associated With Structural Controllability in Human Visual Cortex
 
 [![tests](https://github.com/KALab-DBTNBRC/retinotopy-controllability-visual-cortex/actions/workflows/tests.yml/badge.svg)](https://github.com/KALab-DBTNBRC/retinotopy-controllability-visual-cortex/actions/workflows/tests.yml)
 [![fixture tests](https://img.shields.io/badge/fixture%20tests-23%20passing-brightgreen)](tests/)
@@ -78,9 +78,7 @@ scripts/
                                                  the comparison graph metrics (degree, eigenvector
                                                  centrality, communicability, participation coefficient),
                                                  and the within-/extra-visual connectivity decomposition
-  05_receptor_architecture_vs_controllability/   Receptor density vs. controllability (8 hOc units),
-                                                 incl. Bayes factors quantifying what the 8-unit
-                                                 design can and cannot exclude
+  05_receptor_architecture_vs_controllability/   Receptor density vs. controllability (8 hOc units)
   06_retinotopic_eccentricity_vs_controllability/ Eccentricity/polar angle vs. controllability (central
                                                  finding), incl. run_claim2_nodestrength_control.py and
                                                  the robustness suite: metric specificity, spatially
@@ -169,6 +167,7 @@ estimator against known ground truth, including negative controls.
 | `run_connectivity_decomposition.py` | Does the relationship track connections within visual cortex, or connections to the rest of the brain? |
 | `run_gradient_linearity.py` | Is the relationship linear, or only monotonic? |
 | `run_gradient_linearity_adjusted.py` | Does any curvature survive node-strength adjustment, and does it hold up out of sample? |
+| `run_gradient_demographics.py` | Does the per-participant gradient vary with age or sex, given the cohort's age-by-sex skew? |
 | `run_claim2_influence_check.py`, `run_claim2_magnification_check.py`, `run_claim2_rfsize_permutation.py`, `bootstrap_claim2_ci.py` | Individual-participant influence, cortical magnification, receptive-field size, interval estimates |
 
 Three of these narrowed the paper's claims rather than supporting them.
