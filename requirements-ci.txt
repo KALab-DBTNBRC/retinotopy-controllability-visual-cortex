@@ -1,0 +1,18 @@
+# Minimal dependency set required to run the fixture tests in tests/ and the
+# embedded --self-test suites in scripts/. Derived by walking the import graph
+# from those entry points, then verified in a clean virtual environment.
+#
+# This is deliberately NOT the full analysis dependency set. Running the
+# pipeline against real HCP data additionally needs h5py, nctpy, siibra,
+# matplotlib and pandas, plus the external tools (MRtrix3, Connectome
+# Workbench, FSL). None of those are needed to validate the estimators
+# against synthetic fixtures, which is all CI does.
+#
+# Version floors, not pins: the tests are numerically tolerant and pass on
+# numpy 2.x. Upper bounds are deliberately omitted so CI surfaces upstream
+# breakage rather than hiding it.
+
+numpy>=1.24
+scipy>=1.10
+nibabel>=5.0
+openpyxl>=3.1

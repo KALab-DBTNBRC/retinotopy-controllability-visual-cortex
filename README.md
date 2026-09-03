@@ -220,7 +220,10 @@ three things:
 1. Runs all 9 fixture tests in `tests/` and all 9 embedded `--self-test`
    suites in `scripts/`, on Python 3.10, 3.11 and 3.12. These validate the
    estimators against synthetic data with known ground truth, including
-   negative controls, and need no access to HCP data.
+   negative controls, and need no access to HCP data. CI installs only
+   `requirements-ci.txt` (numpy, scipy, nibabel, openpyxl), the minimal set
+   reachable from those entry points; the full analysis stack is documented
+   under Dependencies below.
 2. Fails the build if any tracked file contains a six-digit number that is
    not on a short, commented allow-list of known non-identifiers. Real HCP
    subject IDs are six digits, so this is a tripwire against committing one.
