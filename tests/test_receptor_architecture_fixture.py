@@ -4,6 +4,16 @@ it on real data -- same discipline as every other statistical script in
 this project. Covers: Mantel test calibration (null + real-signal cases),
 hierarchical clustering recovery of known block structure, PCA recovery of
 a dominant shared factor, and E/I index sign correctness."""
+
+import sys
+from pathlib import Path
+# Resolve sibling script directories relative to this file, so the tests run
+# from any checkout location without editing paths.
+_ROOT = Path(__file__).resolve().parent.parent
+for _d in sorted((_ROOT / "scripts").iterdir()):
+    if _d.is_dir():
+        sys.path.insert(0, str(_d))
+
 import numpy as np
 from receptor_architecture_analysis import (
     fingerprint_similarity_matrix, hierarchical_cluster, mantel_test,

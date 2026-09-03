@@ -10,9 +10,17 @@ real data. Two checks:
      signal when one is present, not just correctly stay quiet when one
      isn't.
 """
+
 import sys
-sys.path.insert(0, ".")
-sys.path.insert(0, "/path/to/project")
+from pathlib import Path
+# Resolve sibling script directories relative to this file, so the tests run
+# from any checkout location without editing paths.
+_ROOT = Path(__file__).resolve().parent.parent
+for _d in sorted((_ROOT / "scripts").iterdir()):
+    if _d.is_dir():
+        sys.path.insert(0, str(_d))
+
+import sys
 import numpy as np
 import run_claim1_analysis as c1
 from run_claim1_power_analysis import simulate_power_curve, make_base_pattern, interpolate_mdes

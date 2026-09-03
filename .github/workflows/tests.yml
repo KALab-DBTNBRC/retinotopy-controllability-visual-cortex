@@ -1,0 +1,121 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  fixture-tests:
+    name: Fixture tests and self-tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # Only what the fixture tests and self-tests need. The neuroimaging
+          # stack (nibabel, h5py, nctpy, siibra) and the external tools
+          # (MRtrix3, Connectome Workbench, FSL) are required to run the
+          # pipeline against real HCP data, not to validate the estimators.
+          pip install numpy scipy pandas openpyxl
+
+      - name: Run fixture tests
+        run: |
+          fail=0
+          for f in tests/test_*.py; do
+            echo "::group::$f"
+            if python "$f"; then
+              echo "PASS $f"
+            else
+              echo "::error file=$f::fixture test failed"
+              fail=1
+            fi
+            echo "::endgroup::"
+          done
+          exit $fail
+
+      - name: Run embedded self-tests
+        run: |
+          fail=0
+          for f in $(grep -rl --include='*.py' -- '--self-test' scripts | sort); do
+            echo "::group::$f"
+            if python "$f" --self-test; then
+              echo "PASS $f"
+            else
+              echo "::error file=$f::self-test failed"
+              fail=1
+            fi
+            echo "::endgroup::"
+          done
+          exit $fail
+
+  deidentification:
+    name: De-identification check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: No six-digit HCP-style identifiers outside documented placeholders
+        run: |
+          # Real HCP subject IDs are six digits. A handful of six-digit values
+          # in this repository are not identifiers (usage-example placeholders,
+          # iteration counts, a clipping bound); each is listed and commented
+          # below. Anything else six digits long in a tracked file fails the
+          # build, so a real subject ID cannot be committed silently.
+          python - <<'EOF'
+          import re, subprocess, sys, os
+          # Documented non-identifier six-digit values. Anything not listed
+          # here fails the build, so a real subject ID cannot slip in silently.
+          ALLOW = {
+              "123456", "234567", "345678", "456789",  # usage-example placeholders
+              "999999",                                 # Fisher-z clipping bound
+              "500000",                                 # MRtrix '500K' streamline count
+              "501628",                                 # hash fragment in an example filename
+              "100000",                                 # permutation/bootstrap iteration count
+          }
+          files = subprocess.run(["git", "ls-files"], capture_output=True,
+                                 text=True, check=True).stdout.split()
+          pat = re.compile(r'(?<!\d)(\d{6})(?!\d)')
+          hits = []
+          for f in files:
+              if not os.path.isfile(f) or os.path.getsize(f) > 20_000_000:
+                  continue
+              try:
+                  txt = open(f, encoding="utf-8", errors="ignore").read()
+              except Exception:
+                  continue
+              for m in pat.finditer(txt):
+                  if m.group(1) in ALLOW:
+                      continue
+                  s = max(0, m.start() - 60)
+                  hits.append((f, m.group(1), txt[s:m.end() + 40].replace("\n", " ")))
+          if hits:
+              print("Potential subject identifiers found:")
+              for f, v, c in hits[:40]:
+                  print(f"  {f}: {v}\n      ...{c}...")
+              sys.exit(1)
+          print(f"Scanned {len(files)} tracked files. No unexpected six-digit identifiers.")
+          EOF
+
+      - name: No absolute server paths
+        run: |
+          if grep -rnE --exclude-dir=.git --include='*.py' --include='*.md' --include='*.csv' \
+                  '/(media|home)/[a-z0-9._-]+/' . ; then
+            echo "::error::absolute server paths found in tracked files"
+            exit 1
+          fi
+          echo "No absolute server paths."

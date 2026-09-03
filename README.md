@@ -1,5 +1,18 @@
 # Retinotopic Organization, Not Receptor Architecture, Is Associated With Structural Controllability in Human Visual Cortex
 
+[![tests](https://github.com/KALab-DBTNBRC/retinotopy-controllability-visual-cortex/actions/workflows/tests.yml/badge.svg)](https://github.com/KALab-DBTNBRC/retinotopy-controllability-visual-cortex/actions/workflows/tests.yml)
+[![fixture tests](https://img.shields.io/badge/fixture%20tests-18%20passing-brightgreen)](tests/)
+[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue?logo=python&logoColor=white)](#dependencies)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow)](LICENSE)
+
+[![Data: HCP S1200 7T](https://img.shields.io/badge/data-HCP%20S1200%207T-0072B2)](https://db.humanconnectome.org)
+[![Atlases](https://img.shields.io/badge/atlases-Schaefer--200%20%7C%20Glasser%20MMP1.0-56B4E9)](#repository-structure)
+[![Cohorts](https://img.shields.io/badge/cohorts-N%3D46%20%2B%20N%3D20%20replication-009E73)](#summary-of-findings)
+[![Nulls](https://img.shields.io/badge/inference-permutation%20%2B%20spin%20%2B%20Moran-E69F00)](#robustness-of-the-central-finding)
+[![Reporting](https://img.shields.io/badge/reporting-COBIDAS%20MRI-lightgrey)](#statistical-approach)
+[![Status](https://img.shields.io/badge/status-manuscript%20in%20preparation-inactive)](#citation)
+
+
 Code and results for a network control theory (NCT) study of human visual
 cortex, testing whether cytoarchitectonic receptor density or retinotopic
 position (pRF eccentricity, polar angle) better explains average and modal
@@ -198,6 +211,23 @@ eccentricity finding.
 `METHODS_DEVELOPMENT_RECORD.md` documents every pipeline error found and
 corrected during construction, together with how each was detected and
 verified.
+
+## Continuous integration
+
+Every push and pull request runs `.github/workflows/tests.yml`, which does
+three things:
+
+1. Runs all 9 fixture tests in `tests/` and all 9 embedded `--self-test`
+   suites in `scripts/`, on Python 3.10, 3.11 and 3.12. These validate the
+   estimators against synthetic data with known ground truth, including
+   negative controls, and need no access to HCP data.
+2. Fails the build if any tracked file contains a six-digit number that is
+   not on a short, commented allow-list of known non-identifiers. Real HCP
+   subject IDs are six digits, so this is a tripwire against committing one.
+3. Fails the build if any tracked file contains an absolute server path.
+
+Checks 2 and 3 exist because both problems occurred during development and
+were caught by hand; they are automated so they cannot recur silently.
 
 ## Dependencies
 

@@ -10,9 +10,18 @@ trusting it on real data. Two cases:
      dominating), and the conclusion should not flip either way (already
      non-significant, stays non-significant).
 """
+
+import sys
+from pathlib import Path
+# Resolve sibling script directories relative to this file, so the tests run
+# from any checkout location without editing paths.
+_ROOT = Path(__file__).resolve().parent.parent
+for _d in sorted((_ROOT / "scripts").iterdir()):
+    if _d.is_dir():
+        sys.path.insert(0, str(_d))
+
 import numpy as np
 import sys
-sys.path.insert(0, ".")
 from run_claim2_influence_check import loso_shifts, rerun_permutation, per_subject_arrays
 
 

@@ -2,8 +2,17 @@
 """Fixture tests for power_analysis_correlation.py -- checked against
 Cohen's (1988) own published power tables before trusting this on real
 project data, not just internal consistency."""
+
 import sys
-sys.path.insert(0, ".")
+from pathlib import Path
+# Resolve sibling script directories relative to this file, so the tests run
+# from any checkout location without editing paths.
+_ROOT = Path(__file__).resolve().parent.parent
+for _d in sorted((_ROOT / "scripts").iterdir()):
+    if _d.is_dir():
+        sys.path.insert(0, str(_d))
+
+import sys
 from power_analysis_correlation import power_for_r, min_detectable_r, required_n
 
 

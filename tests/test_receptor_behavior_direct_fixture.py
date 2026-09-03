@@ -5,6 +5,16 @@ data. The rest of the script reuses already-verified functions (Claim 1's
 UNIT_ORDER/load_region_controllability/pearson_rowwise/bh_fdr, Claim 3's
 load_behavioral/run_one_pair), so only the new function needs its own
 fixture here."""
+
+import sys
+from pathlib import Path
+# Resolve sibling script directories relative to this file, so the tests run
+# from any checkout location without editing paths.
+_ROOT = Path(__file__).resolve().parent.parent
+for _d in sorted((_ROOT / "scripts").iterdir()):
+    if _d.is_dir():
+        sys.path.insert(0, str(_d))
+
 import numpy as np
 from scipy import stats
 import run_claim1_analysis as c1

@@ -6,13 +6,20 @@ extension, Claim 2 Phase B3/C2). Confirms the circular-mean logic handles the
 correctly discriminates tightly-clustered vs. evenly-scattered angle sets.
 Run before trusting mean_polar_angle_deg on real data.
 """
+
+import sys
+from pathlib import Path
+# Resolve sibling script directories relative to this file, so the tests run
+# from any checkout location without editing paths.
+_ROOT = Path(__file__).resolve().parent.parent
+for _d in sorted((_ROOT / "scripts").iterdir()):
+    if _d.is_dir():
+        sys.path.insert(0, str(_d))
+
 import sys
 from pathlib import Path
 
 import numpy as np
-
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-sys.path.insert(0, "/path/to/project")
 from aggregate_prf_to_backbone import circular_mean_deg
 
 

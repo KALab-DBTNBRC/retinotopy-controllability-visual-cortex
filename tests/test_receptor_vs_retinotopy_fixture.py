@@ -6,6 +6,16 @@ since angle is the subject-varying quantity here) -- a different
 permutation axis than run_claim2_polar_angle.py used, so needs its own
 calibration check before trusting real data. circular_linear_corr() itself
 reuses the already-verified Mardia/Fisher-Lee formula."""
+
+import sys
+from pathlib import Path
+# Resolve sibling script directories relative to this file, so the tests run
+# from any checkout location without editing paths.
+_ROOT = Path(__file__).resolve().parent.parent
+for _d in sorted((_ROOT / "scripts").iterdir()):
+    if _d.is_dir():
+        sys.path.insert(0, str(_d))
+
 import numpy as np
 import run_claim1_analysis as c1
 from receptor_vs_retinotopy import test_receptor_vs_angle, circular_linear_corr

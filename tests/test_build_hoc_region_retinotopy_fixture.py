@@ -3,6 +3,16 @@
 real data -- specifically the weighted circular mean for polar angle
 (wraparound risk) and the renormalize-across-real-coverage logic (nodes
 missing retinotopy data shouldn't be treated as zero)."""
+
+import sys
+from pathlib import Path
+# Resolve sibling script directories relative to this file, so the tests run
+# from any checkout location without editing paths.
+_ROOT = Path(__file__).resolve().parent.parent
+for _d in sorted((_ROOT / "scripts").iterdir()):
+    if _d.is_dir():
+        sys.path.insert(0, str(_d))
+
 import csv
 import math
 import subprocess
@@ -10,7 +20,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-SCRIPT = Path(__file__).parent / "build_hoc_region_retinotopy.py"
+SCRIPT = next((_ROOT / "scripts").rglob("build_hoc_region_retinotopy.py"))
 
 
 def write_csv(path, rows, fieldnames):
