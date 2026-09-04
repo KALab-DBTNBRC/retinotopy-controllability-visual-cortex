@@ -10,3 +10,8 @@ escalation,min_vertices=10,mean_gradient_z,27,0.178931,0.000200
 escalation,min_vertices=20,mean_gradient_z,14,0.204138,0.002500
 escalation,min_vertices=40,mean_gradient_z,1,nan,nan
 escalation,min_vertices=80,mean_gradient_z,0,nan,nan
+headline,headline_unadjusted,mean_fisher_z,39,0.141772,0.000400
+headline,headline_quality_adjusted,mean_fisher_z,39,0.208720,0.000100
+stratified,mean_z_low_quality,log_total_valid_vertices,20,0.094000,0.075592
+stratified,mean_z_high_quality,log_total_valid_vertices,19,0.192058,0.000100
+stratified,fitted_z_at_q10,"ci[-0.0804,0.1854]",39,0.042393,

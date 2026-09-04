@@ -199,6 +199,150 @@ def gradients(prf, ctrl, min_nodes, min_vertices):
 QUALITY_TERMS = ["mean_pct_valid", "log_total_valid_vertices", "n_valid_nodes"]
 
 
+# ----------------------------------------------------------------------------
+# arm 3: does the HEADLINE group-level effect survive quality adjustment?
+#
+# Arms 1 and 2 establish whether quality tracks the gradient. They do not close
+# the loop, because the quantity the paper reports is the group mean gradient,
+# not its correlation with quality. Arm 3 tests that quantity directly, twice.
+#
+#   3A, node level. Per-node log suprathreshold vertex count is added as a
+#       second covariate inside each participant's partial correlation, exactly
+#       parallel to the node-strength control. Inference is the same
+#       within-participant spatial permutation used for the headline result:
+#       outcome and covariates are residualised once, the reshuffled predictor
+#       is residualised per permutation.
+#
+#   3B, participant level. Each participant's gradient is adjusted for their
+#       own quality index, and the adjusted group mean is tested by sign flip.
+#       This is the intercept of gradient ~ quality at mean quality.
+# ----------------------------------------------------------------------------
+
+def _residualize(v, Z):
+    X = np.column_stack([np.ones(len(v)), Z])
+    beta, *_ = np.linalg.lstsq(X, v, rcond=None)
+    return v - X @ beta
+
+
+def partial_corr_multi(x, y, Z):
+    x = np.asarray(x, float); y = np.asarray(y, float); Z = np.asarray(Z, float)
+    if Z.ndim == 1:
+        Z = Z[:, None]
+    if len(x) < Z.shape[1] + 3 or np.std(x) == 0 or np.std(y) == 0:
+        return np.nan
+    rx, ry = _residualize(x, Z), _residualize(y, Z)
+    if np.std(rx) < 1e-12 or np.std(ry) < 1e-12:
+        return np.nan
+    return float(np.corrcoef(rx, ry)[0, 1])
+
+
+def _pearson_rowwise(A, B):
+    A = A - A.mean(axis=1, keepdims=True)
+    B = B - B.mean(axis=1, keepdims=True)
+    num = (A * B).sum(axis=1)
+    den = np.sqrt((A ** 2).sum(axis=1) * (B ** 2).sum(axis=1))
+    with np.errstate(divide="ignore", invalid="ignore"):
+        return np.where(den > 0, num / den, np.nan)
+
+
+def subject_permuted_partial_r_multi(x, y, Z, n_perm, rng):
+    x = np.asarray(x, float); k = len(x)
+    ry = _residualize(np.asarray(y, float), Z)
+    keys = np.random.default_rng(rng.integers(0, 2 ** 63 - 1)).random((n_perm, k))
+    X_perm = x[np.argsort(keys, axis=1)]
+    Xd = np.column_stack([np.ones(k), np.asarray(Z, float)])
+    H = Xd @ np.linalg.pinv(Xd)
+    return _pearson_rowwise(X_perm - X_perm @ H.T, np.tile(ry, (n_perm, 1)))
+
+
+def headline_cell(prf, ctrl, min_nodes, min_vertices, use_quality, n_perm, rng):
+    """Group mean Fisher z and its permutation p, with or without the
+    node-level pRF quality covariate."""
+    rs, arrays = [], []
+    for s in sorted(set(prf) & set(ctrl)):
+        nodes = [n for n in sorted(set(prf[s]) & set(ctrl[s]))
+                 if prf[s][n][2] >= min_vertices]
+        if len(nodes) < min_nodes:
+            continue
+        x = np.array([prf[s][n][0] for n in nodes])
+        y = np.array([ctrl[s][n] for n in nodes])
+        cols = [np.array([prf[s][n][1] for n in nodes])]
+        if use_quality:
+            cols.append(np.log1p(np.array([prf[s][n][2] for n in nodes])))
+        Z = np.column_stack(cols)
+        if not np.all(np.isfinite(Z)):
+            continue
+        r = partial_corr_multi(x, y, Z)
+        if np.isfinite(r):
+            rs.append(r); arrays.append((x, y, Z))
+    if len(rs) < 5:
+        return None
+    z = np.arctanh(np.clip(rs, -0.999999, 0.999999))
+    obs = float(z.mean())
+    null = np.nanmean(np.vstack([
+        np.arctanh(np.clip(subject_permuted_partial_r_multi(x, y, Z, n_perm, rng),
+                           -0.999999, 0.999999))
+        for (x, y, Z) in arrays]), axis=0)
+    null = null[np.isfinite(null)]
+    p = float((np.sum(np.abs(null) >= abs(obs)) + 1) / (len(null) + 1)) \
+        if len(null) else float("nan")
+    return {"n_subjects": len(rs), "mean_partial_r": float(np.mean(rs)),
+            "mean_fisher_z": obs, "p_permutation": p}
+
+
+def quality_stratified(grad, term, n_perm, rng, n_boot=5000):
+    """3B: is the gradient present in the WORST data this cohort contains?
+
+    Subtracting a centred quality term leaves the group mean algebraically
+    unchanged, so 'adjusting the mean for quality' answers nothing. The
+    informative question is whether the gradient survives at low quality. Two
+    ways of asking it:
+
+      - split the cohort at the median quality and test each half separately;
+      - fit gradient ~ quality and evaluate it at the 10th percentile of the
+        observed quality range, with a bootstrap interval over participants.
+
+    A pure measurement artifact predicts a gradient near zero in the low half
+    and a low-quality fitted value whose interval contains zero.
+    """
+    subs = sorted(grad)
+    if len(subs) < 12:
+        return None
+    g = np.array([grad[s][0] for s in subs])
+    q = np.array([grad[s][1][term] for s in subs])
+
+    med = np.median(q)
+    lo_m, hi_m = q <= med, q > med
+    if lo_m.sum() < 5 or hi_m.sum() < 5:
+        return None
+
+    q10 = float(np.quantile(q, 0.10))
+    b = ols_beta(g, [q])
+    if b is None:
+        return None
+    inter = float(g.mean() - b[0] * q.mean())
+    fit_lo = inter + b[0] * q10
+
+    boot = np.empty(n_boot)
+    n = len(subs)
+    for i in range(n_boot):
+        idx = rng.integers(0, n, n)
+        bb = ols_beta(g[idx], [q[idx]])
+        boot[i] = np.nan if bb is None else \
+            (g[idx].mean() - bb[0] * q[idx].mean()) + bb[0] * q10
+    boot = boot[np.isfinite(boot)]
+
+    return {"term": term, "n_subjects": n,
+            "n_low": int(lo_m.sum()), "n_high": int(hi_m.sum()),
+            "mean_z_low_quality": float(g[lo_m].mean()),
+            "p_low_quality": signflip_p(g[lo_m], n_perm, rng),
+            "mean_z_high_quality": float(g[hi_m].mean()),
+            "p_high_quality": signflip_p(g[hi_m], n_perm, rng),
+            "fitted_z_at_q10": float(fit_lo),
+            "ci_lo": float(np.quantile(boot, 0.025)) if boot.size else float("nan"),
+            "ci_hi": float(np.quantile(boot, 0.975)) if boot.size else float("nan")}
+
+
 def run_association(grad, n_perm, seed):
     rng = np.random.default_rng(seed)
     subs = sorted(grad)
@@ -258,7 +402,8 @@ def self_test():
         ok &= bool(cond)
 
     def synth(n_sub=46, n_node=52, seed0=0, slope=0.35,
-              quality_effect=0.0, weak_node_only=False, poor_frac=0.5):
+              quality_effect=0.0, weak_node_only=False, poor_frac=0.5,
+              via_node_quality=0.0):
         """Synthetic cohort with controllable pRF quality structure.
 
         quality_effect  gradient slope scales with participant data quality
@@ -282,6 +427,14 @@ def self_test():
             if weak_node_only:
                 eff = np.where(nv < 10, slope * 3.0, 0.0)
             y = eff * ecc + 0.35 * cov + r.normal(0, 1.0, n_node)
+            if via_node_quality:
+                # The eccentricity-controllability link exists ONLY because both
+                # track a node's suprathreshold vertex count. Adding node-level
+                # quality as a covariate must destroy it. This is the node-level
+                # analogue of a node-strength-mediated artifact.
+                ecc = 0.6 * np.log1p(nv) + r.normal(0, 0.25, n_node)
+                y = via_node_quality * np.log1p(nv) + 0.35 * cov \
+                    + r.normal(0, 0.6, n_node)
             for j in range(n_node):
                 lab = f"N{j:03d}"
                 # pct_valid tracks participant quality, as it does in real data
@@ -356,6 +509,57 @@ def self_test():
     check("escalation NEGATIVE CONTROL: sparse-node artefact dies at a high bar",
           abs(esc_w[1]["mean_gradient_z"]) < abs(esc_w[0]["mean_gradient_z"]) / 2)
 
+    # --- arm 3A, node-level quality covariate --------------------------------
+    r0 = np.random.default_rng(7)
+    x = r0.normal(size=60); y = r0.normal(size=60); z1 = r0.normal(size=60)
+    check("partial_corr_multi with one covariate equals partial_corr",
+          abs(partial_corr_multi(x, y, z1[:, None]) - partial_corr(x, y, z1)) < 1e-12)
+
+    prf, ctrl = synth(quality_effect=0.0, seed0=11)
+    base = headline_cell(prf, ctrl, 15, 5, False, 800, np.random.default_rng(11))
+    adj = headline_cell(prf, ctrl, 15, 5, True, 800, np.random.default_rng(11))
+    check("3A: real effect is detected without the quality covariate",
+          base["p_permutation"] < 0.01 and base["mean_fisher_z"] > 0.15)
+    check("3A: real effect survives the node-level quality covariate",
+          adj["p_permutation"] < 0.01 and adj["mean_fisher_z"] > 0.15)
+    check("3A: adjustment does not inflate the estimate",
+          adj["mean_fisher_z"] < base["mean_fisher_z"] * 1.5)
+
+    # NEGATIVE CONTROL: an association that exists only through node quality
+    prf_v, ctrl_v = synth(via_node_quality=0.8, seed0=12)
+    base_v = headline_cell(prf_v, ctrl_v, 15, 5, False, 800, np.random.default_rng(12))
+    adj_v = headline_cell(prf_v, ctrl_v, 15, 5, True, 800, np.random.default_rng(12))
+    check("3A NEGATIVE CONTROL: quality-mediated effect looks real unadjusted",
+          base_v["p_permutation"] < 0.05 and abs(base_v["mean_fisher_z"]) > 0.2)
+    check("3A NEGATIVE CONTROL: node-level quality covariate removes it",
+          abs(adj_v["mean_fisher_z"]) < abs(base_v["mean_fisher_z"]) / 3)
+
+    # --- arm 3B, is the gradient present in the worst data --------------------
+    prf, ctrl = synth(quality_effect=0.0, seed0=13)
+    g = gradients(prf, ctrl, 15, 5)
+    b3 = quality_stratified(g, "log_total_valid_vertices", 4000,
+                            np.random.default_rng(13), n_boot=1500)
+    check("3B: gradient holds in the low-quality half", b3["p_low_quality"] < 0.01)
+    check("3B: gradient holds in the high-quality half", b3["p_high_quality"] < 0.01)
+    check("3B: low-quality fitted value excludes zero when the effect is real",
+          b3["ci_lo"] > 0)
+
+    # NEGATIVE CONTROL: gradient present ONLY in good data. The low-quality half
+    # must come back null, which is what a measurement artifact would look like.
+    prf_q, ctrl_q = synth(quality_effect=0.0, seed0=14)
+    gq = gradients(prf_q, ctrl_q, 15, 5)
+    subs = sorted(gq)
+    qv = np.array([gq[s][1]["log_total_valid_vertices"] for s in subs])
+    med = np.median(qv)
+    gq = {s: ((v[0] if qv[i] > med else 0.02 * v[0]), v[1])
+          for i, (s, v) in enumerate(gq.items())}
+    b3n = quality_stratified(gq, "log_total_valid_vertices", 4000,
+                             np.random.default_rng(15), n_boot=1500)
+    check("3B NEGATIVE CONTROL: quality-only effect is null in the low half",
+          abs(b3n["mean_z_low_quality"]) < abs(b3n["mean_z_high_quality"]) / 5)
+    check("3B NEGATIVE CONTROL: its low-quality fitted value is near zero",
+          abs(b3n["fitted_z_at_q10"]) < abs(b3["fitted_z_at_q10"]) / 2)
+
     print("\nSELF-TEST: " + ("ALL PASSED" if ok else "FAILURES"))
     return 0 if ok else 1
 
@@ -395,6 +599,12 @@ def main():
     thr = [int(t) for t in a.thresholds.split(",")]
     esc = run_escalation(prf, ctrl, a.min_valid_nodes, thr, a.n_permutations,
                          a.seed + 1)
+    base = headline_cell(prf, ctrl, a.min_valid_nodes, a.min_vertices_per_node,
+                         False, a.n_permutations, np.random.default_rng(a.seed + 2))
+    qadj = headline_cell(prf, ctrl, a.min_valid_nodes, a.min_vertices_per_node,
+                         True, a.n_permutations, np.random.default_rng(a.seed + 2))
+    strat = quality_stratified(grad, "log_total_valid_vertices",
+                               a.n_permutations, np.random.default_rng(a.seed + 3))
 
     with open(a.out_csv, "w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
@@ -406,6 +616,19 @@ def main():
             w.writerow(["escalation", f"min_vertices={r['min_vertices_per_node']}",
                         "mean_gradient_z", r["n_subjects"],
                         f"{r['mean_gradient_z']:.6f}", f"{r['p_permutation']:.6f}"])
+        for name, r in [("headline_unadjusted", base), ("headline_quality_adjusted", qadj)]:
+            if r:
+                w.writerow(["headline", name, "mean_fisher_z", r["n_subjects"],
+                            f"{r['mean_fisher_z']:.6f}", f"{r['p_permutation']:.6f}"])
+        if strat:
+            for k, pk in [("mean_z_low_quality", "p_low_quality"),
+                          ("mean_z_high_quality", "p_high_quality")]:
+                w.writerow(["stratified", k, strat["term"],
+                            strat["n_low"] if "low" in k else strat["n_high"],
+                            f"{strat[k]:.6f}", f"{strat[pk]:.6f}"])
+            w.writerow(["stratified", "fitted_z_at_q10",
+                        f"ci[{strat['ci_lo']:.4f},{strat['ci_hi']:.4f}]",
+                        strat["n_subjects"], f"{strat['fitted_z_at_q10']:.6f}", ""])
 
     print(f"atlas = {a.atlas}   metric = {a.metric}   covariate = {a.covariate}")
     print(f"  participants {res['n']}, mean gradient (Fisher z) "
@@ -427,6 +650,23 @@ def main():
         print(f"    min_vertices >= {r['min_vertices_per_node']:3d}   "
               f"n = {r['n_subjects']:3d}   mean z = {r['mean_gradient_z']:+.4f}   "
               f"p = {r['p_permutation']:.4f}")
+    print("\n  arm 3A, does the HEADLINE effect survive a node-level quality covariate")
+    for name, r in [("unadjusted", base), ("+ log vertices/node", qadj)]:
+        if r:
+            print(f"    {name:22s} n = {r['n_subjects']:3d}   "
+                  f"mean r = {r['mean_partial_r']:+.4f}   "
+                  f"mean z = {r['mean_fisher_z']:+.4f}   "
+                  f"p = {r['p_permutation']:.4f}")
+    if strat:
+        print("\n  arm 3B, is the gradient present in the worst data this cohort has")
+        print(f"    low-quality half   n = {strat['n_low']:3d}   "
+              f"mean z = {strat['mean_z_low_quality']:+.4f}   "
+              f"p = {strat['p_low_quality']:.4f}")
+        print(f"    high-quality half  n = {strat['n_high']:3d}   "
+              f"mean z = {strat['mean_z_high_quality']:+.4f}   "
+              f"p = {strat['p_high_quality']:.4f}")
+        print(f"    fitted at 10th pct of quality  z = {strat['fitted_z_at_q10']:+.4f}   "
+              f"95% CI [{strat['ci_lo']:+.4f}, {strat['ci_hi']:+.4f}]")
     print(f"\nwrote {a.out_csv}")
     return 0
 
