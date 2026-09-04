@@ -1,7 +1,7 @@
 # Retinotopic Organization Is Associated With Structural Controllability in Human Visual Cortex
 
 [![tests](https://github.com/KALab-DBTNBRC/retinotopy-controllability-visual-cortex/actions/workflows/tests.yml/badge.svg)](https://github.com/KALab-DBTNBRC/retinotopy-controllability-visual-cortex/actions/workflows/tests.yml)
-[![fixture tests](https://img.shields.io/badge/fixture%20tests-23%20passing-brightgreen)](tests/)
+[![self-tests](https://img.shields.io/badge/self--tests-9%20fixture%20%2B%2018%20embedded-brightgreen)](tests/)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue?logo=python&logoColor=white)](#dependencies)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow)](LICENSE)
 
@@ -27,40 +27,65 @@ Principal investigator: Dr. Khushbu Agarwal, National Brain Research Centre
 
 ## Summary of findings
 
-Retinotopic position, not receptor architecture, organizes structural
+Retinotopic position, not receptor architecture, is associated with structural
 controllability in human visual cortex.
 
-The finding is carried by **average controllability**, which is the robust
-result: eccentricity predicts it in both parcellations (Schaefer-200 and
-Glasser MMP1.0), under two different covariate specifications, and it
-survives adjustment for weighted node degree in all four atlas-by-covariate
-combinations. It replicates in an independent, substance-use-enriched
-companion cohort, concentrates anatomically in early visual cortex, and
-extends to polar angle as well as eccentricity.
+The finding is carried by **average controllability**. Eccentricity tracks it in
+both parcellations (Schaefer-200 mean partial r = +0.248, Glasser MMP1.0 +0.138),
+under two different covariate specifications, and after adjustment for weighted
+node degree in all four atlas-by-covariate combinations (+0.124 and +0.127 under
+the vertex-count covariate; +0.180 and +0.270 under the pRF-size covariate). The
+adjustment holds in linear, quadratic and rank forms; the cubic form is
+inconclusive in Glasser (+0.076, p = 0.077), where a cubic polynomial alongside
+node size consumes a large share of the degrees of freedom available at a median
+of 21 nodes per participant. It survives nulls preserving the spatial
+autocorrelation of a cortical map — spin and Moran spectral randomisation — both
+before and after degree adjustment, survives restriction of the retinotopic
+estimates to the stimulus-supported eccentricity range, survives adjustment for
+per-node pRF data quality, and extends to polar angle as a second retinotopic
+dimension. It replicates in a non-overlapping, substance-use-enriched companion
+cohort (+0.205 Schaefer-200, +0.148 Glasser).
+
+**Specificity is atlas-dependent, and is reported as such.** In Glasser, average
+controllability is the only one of five node-level metrics to survive correction,
+and a direct pairwise comparison on one common node set — participant by
+participant, on absolute Fisher z — finds it significantly stronger than weighted
+degree (+0.067), communicability (+0.072), eigenvector centrality (+0.123) and
+modal controllability (+0.114), all q < 0.001, with average controllability the
+stronger metric in 72 to 82 per cent of individual participants. In Schaefer-200
+every centrality measure tracks eccentricity and no pairwise comparison approaches
+significance (smallest q = 0.248): there, eccentricity tracks network centrality
+in general rather than controllability in particular.
 
 **Modal controllability behaves differently, and is reported as the weaker
-result it is.** Its association with eccentricity is large before node
-strength is controlled, but survives node-strength adjustment in only one of
-four atlas-by-covariate combinations — weighted degree correlates with modal
-controllability at a within-subject median of −0.92 to −0.95 here, so a
-modal finding and a degree finding are close to the same statement (cf. Tu
-et al., 2018; Pasqualetti et al., 2019). The exception is Glasser's Early
-Visual division, where the modal effect is the strongest in the dataset
-(partial r = −0.489). See `results/retinotopic_eccentricity_vs_controllability/nodestrength_control/`.
+result it is.** Its association with eccentricity is large before node strength
+is controlled, but survives node-strength adjustment in only one of four
+atlas-by-covariate combinations — weighted degree correlates with modal
+controllability at a within-participant median of -0.92 to -0.95 here, so a modal
+finding and a degree finding are close to the same statement (cf. Tu et al.,
+2018; Pasqualetti et al., 2019). Glasser's Early Visual division is the exception,
+carrying the largest modal estimate in the dataset (partial r = -0.489). That
+division yields the strongest evidence for the effect but cannot be shown to have
+the largest effect: divisions differ in participant retention as well as in effect
+size, and no paired between-division contrast survives correction. See
+`results/retinotopic_eccentricity_vs_controllability/nodestrength_control/`.
 
-Cytoarchitectonic receptor density does not predict controllability on
-either parcellation, is not related to retinotopic position when tested
-directly, and does not reach behaviour. Its only reliable structural
-correlates are anatomical region size and (on one of two parcellations) raw
-structural connectivity strength. The receptor null is bounded by power: the
-8-unit design detects only very large spatial alignments (minimum detectable
-r ≈ 0.78), so it is strong evidence against large receptor–controllability
+Cytoarchitectonic receptor density shows no detectable correspondence with
+controllability on either parcellation (0 of 30 tests in each), is not associated
+with retinotopic position when tested directly, and shows no relationship to
+behaviour. Its only reliable structural correlates are anatomical region size and,
+on one of two parcellations and within a single collinear cluster, raw structural
+connectivity strength. The receptor null is bounded by power: the eight-unit
+design detects only very large spatial alignments (minimum detectable r = 0.78 at
+80% power), so it is strong evidence against large receptor-controllability
 relationships and weak evidence against moderate ones.
 
-No controllability measure related to delay discounting, inhibitory control,
-or NEO-FFI personality. No controllability measure differed by substance-use
-group membership or severity, though those comparisons are underpowered at
-N = 20 and rule out only large effects.
+No controllability measure was associated with delay discounting, inhibitory
+control, or NEO-FFI personality; the largest raw correlation anywhere was
+r = -0.283, against a minimum detectable effect of r = 0.40. No controllability
+measure differed by substance-use group membership or severity, in level or in
+per-participant gradient, though those comparisons are underpowered at N = 20 and
+rule out only large effects.
 
 The manuscript is maintained separately and is not included here.
 `METHODS_DEVELOPMENT_RECORD.md` documents the pipeline errors found and
@@ -91,10 +116,11 @@ scripts/
                                                  group comparison, SSAGA severity sweep, and the
                                                  gradient-level cohort/severity/behaviour tests
   11_power_analysis/                             Minimum-detectable-effect analyses for the null results
-  12_figure_generation/                          Per-node effect maps and figure source renders
+  12_pernode_effect_maps/                        Node-level statistics behind the effect-map panels
 tests/                                           Synthetic-fixture self-tests with known ground truth
 results/
-  <one subfolder per analysis stage above, mirroring scripts/05-12>
+  <one subfolder per analysis stage above, mirroring scripts/05-12; the
+   outputs of scripts/12_pernode_effect_maps land in results/pernode_analysis>
 data/
   receptor-densities-deduped.csv                 Group-level Julich receptor densities (no subject data)
   {glasser,schaefer200}_node_centroids.csv       Node centroid coordinates from the group surfaces, used
@@ -168,9 +194,13 @@ estimator against known ground truth, including negative controls.
 | `run_gradient_linearity.py` | Is the relationship linear, or only monotonic? |
 | `run_gradient_linearity_adjusted.py` | Does any curvature survive node-strength adjustment, and does it hold up out of sample? |
 | `run_gradient_demographics.py` | Does the per-participant gradient vary with age or sex, given the cohort's age-by-sex skew? |
+| `run_metric_pairwise_comparison.py` | Surviving correction while other metrics do not is not the same as being stronger than them. Are the dependent correlations different when compared directly, participant by participant, on one common node set? |
+| `run_spatial_null_adjusted.py` | Do degree-robustness and spatial-autocorrelation-robustness hold simultaneously, rather than only one at a time? |
+| `run_gradient_prf_quality.py` | Is the gradient an artefact of pRF data quality, and is it present in the worst data the cohort contains? |
+| `run_headline_specification_checks.py` | Does it survive capping eccentricity at the stimulus-supported range, and adjusting for degree in quadratic, cubic and rank forms? |
 | `run_claim2_influence_check.py`, `run_claim2_magnification_check.py`, `run_claim2_rfsize_permutation.py`, `bootstrap_claim2_ci.py` | Individual-participant influence, cortical magnification, receptive-field size, interval estimates |
 
-Three of these narrowed the paper's claims rather than supporting them.
+Four of these narrowed the paper's claims rather than supporting them.
 Specificity to controllability holds in Glasser MMP1.0 but not in
 Schaefer-200, where eccentricity predicts all centrality measures
 undifferentiatedly. Early Visual cortex yields the strongest *evidence*
@@ -179,7 +209,9 @@ divisions differ in participant retention as well as in effect size. And an
 apparent departure from linearity, reported in an earlier draft, proved to be
 a connectivity-strength effect: it vanished once weighted node degree entered
 the model, and the spline never predicted held-out nodes better than a
-straight line. **`gradient_linearity_*.csv` therefore reports a superseded,
+straight line. Finally, the cubic degree-adjustment could not be resolved in
+Glasser at this node count and is reported as inconclusive rather than as either
+support or refutation. **`gradient_linearity_*.csv` reports a superseded,
 unadjusted result and is retained only for comparison; the adjusted result in
 `gradient_linearity_adjusted_*.csv` is the one the manuscript reports.**
 
@@ -236,8 +268,10 @@ verified.
 Every push and pull request runs `.github/workflows/tests.yml`, which does
 three things:
 
-1. Runs all 9 fixture tests in `tests/` and all 9 embedded `--self-test`
-   suites in `scripts/`, on Python 3.10, 3.11 and 3.12. These validate the
+1. Runs all 9 fixture tests in `tests/` and every embedded `--self-test`
+   suite in `scripts/` (18 at present), on Python 3.10, 3.11 and 3.12. The
+   self-test suites are discovered by grep at run time rather than listed, so a
+   new script carrying one is picked up without editing the workflow. These validate the
    estimators against synthetic data with known ground truth, including
    negative controls, and need no access to HCP data. CI installs only
    `requirements-ci.txt` (numpy, scipy, nibabel, openpyxl), the minimal set
@@ -271,8 +305,10 @@ usage; run any script with `--help` for its full argument list.
 
 Scripts in `05_*` through `12_*` can be re-run directly against the tables
 already present in `results/` (e.g. to regenerate a specific statistical
-test or rebuild a figure) without needing the raw HCP data or upstream
-neuroimaging tools. See each script's `--help` and module docstring for its
+test) without needing the raw HCP data or upstream neuroimaging tools.
+Figure rendering itself is not part of this repository: the surface renders
+and composed panels are produced separately, and only the node-level
+statistics behind them are shipped, under `results/pernode_analysis/`. See each script's `--help` and module docstring for its
 expected input file arguments.
 
 Every analysis script carries a fixture or self-test mode that runs on

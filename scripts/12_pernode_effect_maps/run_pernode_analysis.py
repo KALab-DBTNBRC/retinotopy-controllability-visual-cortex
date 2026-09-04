@@ -1,13 +1,21 @@
 #!/usr/bin/env python3
 """
-Per-node effect maps for Figure 4 Panels C/D and Figure 8 Panel B.
+Per-node effect maps: the node-level statistics behind the brain-surface
+effect-map panels.
 
-These are the three "analysis to run first" items flagged in
-2026-08-16-brain-images-rendering-spec.docx (Sections 4 and 7b) as blocking
-the corresponding brain-surface renders. The renders themselves still need
-server-side access to the fsLR32k surface geometry files -- but the
-per-node statistics behind them don't, so this can run now against the
-already-available CSVs and master-table.xlsx.
+Three maps are produced per atlas: eccentricity against average
+controllability, eccentricity against modal controllability, and
+Agreeableness against average controllability.
+
+Output filenames and log labels deliberately carry no figure numbers.
+Manuscript figure and panel numbering changes between drafts; the content
+of these tables does not, and filenames that named a panel went stale
+twice before this note was written. Consult the manuscript for which panel
+currently displays which map.
+
+The surface renders themselves still need server-side access to the fsLR32k
+surface geometry files, but the per-node statistics behind them do not, so
+this runs against the already-available CSVs and the cohort master table.
 
 Design, per the brain-render spec (deliberately simpler than the paper's
 primary Claim 2 statistic, and captioned as such wherever used):
@@ -29,7 +37,7 @@ scripts' own already-verified loading logic (same Vis-network node
 definitions, same log-transform convention, same source columns).
 
 Usage (defaults point at the real files already used elsewhere this
-project, D:\\Frontiers Project == /path/to/project):
+project; substitute your own project root for /path/to/project):
     python3 run_pernode_analysis.py
 """
 import argparse
@@ -114,7 +122,7 @@ def main():
     os.makedirs(out_dir, exist_ok=True)
 
     # ---------------------------------------------------------------
-    # Figure 4, Panels C & D -- per-node eccentricity vs. controllability
+    # Per-node eccentricity vs. controllability, both metrics
     # ---------------------------------------------------------------
     for atlas, ctrl_path in [("schaefer200", ctrl_schaefer_path), ("glasser", ctrl_glasser_path)]:
         subj_ecc, node_size = load_prf_backbone(prf_path, args.min_vertices_per_node, atlas)
@@ -123,13 +131,13 @@ def main():
         rows_avg = pernode_pearson(subj_ecc, subj_avg_log, node_size)
         rows_modal = pernode_pearson(subj_ecc, subj_modal, node_size)
 
-        write_csv(rows_avg, os.path.join(out_dir, f"fig04_pernode_effect_average_controllability_{atlas}.csv"))
-        write_csv(rows_modal, os.path.join(out_dir, f"fig04_pernode_effect_modal_controllability_{atlas}.csv"))
-        summarize(rows_avg, f"Figure 4C ({atlas}, avg. controllability)")
-        summarize(rows_modal, f"Figure 4D ({atlas}, modal controllability)")
+        write_csv(rows_avg, os.path.join(out_dir, f"pernode_effect_average_controllability_{atlas}.csv"))
+        write_csv(rows_modal, os.path.join(out_dir, f"pernode_effect_modal_controllability_{atlas}.csv"))
+        summarize(rows_avg, f"per-node eccentricity vs average controllability ({atlas})")
+        summarize(rows_modal, f"per-node eccentricity vs modal controllability ({atlas})")
 
     # ---------------------------------------------------------------
-    # Figure 8, Panel B -- per-node Agreeableness vs. average controllability
+    # Per-node Agreeableness vs. average controllability
     # (representative measure, see brain-images-rendering-spec.docx Section 7b)
     # ---------------------------------------------------------------
     personality = load_personality(master_table_path)  # dict[subject] -> {trait: value}
@@ -150,8 +158,8 @@ def main():
                 agreeableness_by_subj_node[s][node] = vals["agreeableness"]
 
         rows = pernode_pearson(agreeableness_by_subj_node, subj_avg_log, node_size)
-        write_csv(rows, os.path.join(out_dir, f"fig08_pernode_effect_agreeableness_{atlas}.csv"))
-        summarize(rows, f"Figure 8B ({atlas}, Agreeableness vs. avg. controllability)")
+        write_csv(rows, os.path.join(out_dir, f"pernode_effect_agreeableness_{atlas}.csv"))
+        summarize(rows, f"per-node Agreeableness vs average controllability ({atlas})")
 
     print("\nDone. All outputs are per-node DESCRIPTIVE Pearson r (not the paper's primary "
           "per-subject partial-correlation statistic) -- caption accordingly, per the brain-render spec.")

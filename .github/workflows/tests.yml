@@ -117,8 +117,11 @@ jobs:
 
       - name: No absolute server paths
         run: |
+          # Covers POSIX home/media paths, macOS /Users/, and Windows drive
+          # paths (which reached a docstring once and the old pattern missed).
           if grep -rnE --exclude-dir=.git --include='*.py' --include='*.md' --include='*.csv' \
-                  '/(media|home)/[a-z0-9._-]+/' . ; then
+                  -e '/(media|home|Users)/[A-Za-z0-9._-]+/' \
+                  -e '[A-Za-z]:\\\\+[A-Za-z0-9 _.-]+\\\\' . ; then
             echo "::error::absolute server paths found in tracked files"
             exit 1
           fi

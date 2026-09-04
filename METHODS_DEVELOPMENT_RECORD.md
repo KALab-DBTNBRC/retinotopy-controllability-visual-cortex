@@ -138,6 +138,36 @@ A related point worth noting for interpretation: in several cells, the parametri
 
 ---
 
+## 10. Scalar conversion of a length-one array, caught only by CI
+
+**What happened.** A reference implementation inside `run_gradient_linearity.py`
+built a design row with `np.column_stack(...)` and passed the resulting
+`(1, k)` product to `float()`. NumPy has allowed that for years, deprecated it
+in 2.2, and made it a `TypeError` in 2.3. The analysis workspace had NumPy
+2.2.6, where it emits only a `DeprecationWarning` that nothing was configured to
+surface, so every local run of the self-test passed. Continuous integration
+installs the current NumPy, so the same self-test failed there.
+
+**How it was found.** The CI log, not local testing. That is the point worth
+recording: the workspace could not have found this, because the workspace was
+one minor version behind the behaviour change.
+
+**How it was fixed and verified.** The expression was rewritten as
+`np.concatenate([[1.0, mid], Bm.ravel()]) @ b`, which produces a true scalar.
+Equivalence to the original was checked over 2,000 randomly generated cases,
+maximum absolute difference 0.0. Every other script was then swept for the same
+pattern. Because the workspace NumPy cannot raise the error, the sweep was run
+under `python -W "error:Conversion of an array with ndim > 0 to a scalar:DeprecationWarning"`,
+which promotes exactly that deprecation to an exception and reproduces 2.3
+semantics on 2.2. All 18 embedded self-test suites pass under it.
+
+**Practice adopted.** Version-dependent behaviour is not a hypothetical for a
+repository whose CI floats to the latest release. Where a local environment
+lags, the corresponding warning is promoted to an error for the sweep rather
+than trusting a clean local run. NumPy is deliberately not pinned in
+`requirements-ci.txt`: CI floating to the current release is what surfaced this,
+and pinning would have hidden it until a reader hit it instead.
+
 ## Cross-cutting practices adopted in response
 
 Four conventions were adopted as a direct result of the above and applied from that point onward.
