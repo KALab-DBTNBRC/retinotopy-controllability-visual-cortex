@@ -288,8 +288,13 @@ def run(prf, ctrl, min_nodes, n_knots, n_perm, seed, grid_n=25):
                     Bg = rcs_basis(grid, kn)
                     Xg = np.column_stack([np.ones(grid.size), grid, Bg])
                     fit = Xg @ b
-                    Bm = rcs_basis(np.array([mid]), kn)
-                    ref = float(np.column_stack([[1.0], [mid], Bm]) @ b)
+                    # Design row at the grid midpoint, built as a 1-D vector so
+                    # that row @ b is a true scalar. Building it with
+                    # column_stack gave a (1, k) matrix, and the product was a
+                    # length-1 array; float() on that is an error from NumPy
+                    # 2.3 onward, which is what broke CI.
+                    Bm = rcs_basis(np.array([mid]), kn).ravel()
+                    ref = float(np.concatenate([[1.0, mid], Bm]) @ b)
                 except (ValueError, np.linalg.LinAlgError):
                     continue
                 fit = fit - ref
