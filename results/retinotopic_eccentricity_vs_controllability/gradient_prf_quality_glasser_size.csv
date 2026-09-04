@@ -1,0 +1,12 @@
+arm,model,term,n_subjects,value,p_permutation
+association,mean_pct_valid,mean_pct_valid,39,0.561855,0.316768
+association,log_total_valid_vertices,log_total_valid_vertices,39,0.285191,0.031497
+association,n_valid_nodes,n_valid_nodes,39,0.002553,0.548945
+association,joint,mean_pct_valid,39,-2.449390,0.025597
+association,joint,log_total_valid_vertices,39,1.310312,0.000200
+association,joint,n_valid_nodes,39,-0.020042,0.010399
+escalation,min_vertices=5,mean_gradient_z,39,0.141772,0.000200
+escalation,min_vertices=10,mean_gradient_z,27,0.178931,0.000200
+escalation,min_vertices=20,mean_gradient_z,14,0.204138,0.002500
+escalation,min_vertices=40,mean_gradient_z,1,nan,nan
+escalation,min_vertices=80,mean_gradient_z,0,nan,nan
