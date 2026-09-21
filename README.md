@@ -77,10 +77,29 @@ controllability on either parcellation (0 of 30 tests in each), is not associate
 with retinotopic position when tested directly, and shows no relationship to
 behaviour. Its only reliable structural correlates are anatomical region size and,
 on one of two parcellations and within a single collinear cluster, raw structural
-connectivity strength. The receptor null is bounded by power: the eight-unit
-design detects only very large spatial alignments (minimum detectable r = 0.78 at
-80% power), so it is strong evidence against large receptor-controllability
-relationships and weak evidence against moderate ones.
+connectivity strength.
+
+The receptor null is bounded by the design, and more severely than a sample
+size argument would suggest. The Julich-Brain fingerprints are **not
+lateralised** — left and right carry identical values in all 60
+region-by-receptor combinations — while controllability varies most between
+hemispheres. The predictor therefore cannot vary along the axis the outcome
+varies on, and a perfectly informed hemisphere-constant predictor reaches only
+42–70% of the statistic an unconstrained one would.
+
+Monte Carlo simulation against the real participant data reaches 80% power in
+**one of four** atlas-by-metric cells (Glasser, modal controllability, at
+r = 0.87 against the region-level pattern). In the other three it does not
+reach 80% at any effect size. For average controllability — the metric that
+carries the retinotopic finding — power is **0.17 in Glasser and 0.00 in
+Schaefer-200**, even against a mirrored predictor tracking the region-level
+controllability shape almost perfectly.
+
+So the receptor nulls for average controllability are not evidence about the
+strength of a receptor–controllability relationship. They are evidence that
+answering the question needs a lateralised receptor resource, which these
+fingerprints are not. Nothing here should be read as showing that receptor
+architecture is unrelated to controllability.
 
 No controllability measure was associated with delay discounting, inhibitory
 control, or NEO-FFI personality; the largest raw correlation anywhere was
