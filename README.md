@@ -27,8 +27,10 @@ Principal investigator: Dr. Khushbu Agarwal, National Brain Research Centre
 
 ## Summary of findings
 
-Retinotopic position, not receptor architecture, is associated with structural
-controllability in human visual cortex.
+Retinotopic position is associated with structural controllability in human
+visual cortex. Receptor architecture, as measured here, shows no detectable
+correspondence — but that null is bounded by the design rather than by sample
+size, and is not evidence of absence. The limits are set out below.
 
 The finding is carried by **average controllability**. Eccentricity tracks it in
 both parcellations (Schaefer-200 mean partial r = +0.248, Glasser MMP1.0 +0.138),
@@ -321,15 +323,31 @@ before its new results are trusted.
 ## Citation
 
 If you use this code or these result tables, please cite the accompanying
-paper. [TODO before upload: full citation once accepted; add DOI.]
+paper:
+
+> Roy, R. K., Kothekar, R., Jebel, A., Bassi, T., Chaudhary, S., Sarkar, S.,
+> Balhara, Y. P. S., and Agarwal, K. Retinotopic Organization Is Associated
+> With Structural Controllability in Human Visual Cortex. *Under review.*
+
+Volume, pages and DOI will be added on acceptance.
 
 ## Authors
 
-Principal investigator: Dr. Khushbu Agarwal, National Brain Research Centre
-(DBT-BRIC NBRC), Manesar, India.
+Ritam Kanti Roy<sup>1</sup>, Rahul Kothekar<sup>1</sup>,
+Andrea Jebel<sup>1</sup>, Tanya Bassi<sup>1</sup>,
+Shefali Chaudhary<sup>2</sup>, Siddharth Sarkar<sup>3</sup>,
+Yatan Pal Singh Balhara<sup>3</sup>, Khushbu Agarwal<sup>1,\*</sup>
 
-[TODO before upload: full author list, affiliations, and corresponding
-author details.]
+1. Department of Cognitive and Computational Neuroscience, National Brain
+   Research Centre, NH-8, Manesar, Gurugram, Haryana, 122052, India.
+2. Department of Psychiatry, Yale University School of Medicine, New Haven,
+   CT, 06511, USA.
+3. National Drug Dependence Treatment Centre, All India Institute of Medical
+   Sciences, Sri Aurobindo Marg, Ansari Nagar, Ansari Nagar East, New Delhi,
+   Delhi 110029, India.
+
+\* Corresponding author: Khushbu Agarwal, PhD —
+khushbu.agarwal@nbrc.ac.in; khushbu.agarwal@nbrc.res.in
 
 ## License
 
