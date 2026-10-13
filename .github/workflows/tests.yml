@@ -85,6 +85,8 @@ jobs:
               "500000",                                 # MRtrix '500K' streamline count
               "501628",                                 # hash fragment in an example filename
               "100000",                                 # permutation/bootstrap iteration count
+              "122052",                                 # postal PIN code, NBRC affiliation (README)
+              "110029",                                 # postal PIN code, AIIMS affiliation (README)
           }
           files = subprocess.run(["git", "ls-files"], capture_output=True,
                                  text=True, check=True).stdout.split()
